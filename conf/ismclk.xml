@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO8859-1" ?>
+<config>
+	<module hostname="LAPTOP-Cimiy">
+		<setting name="slave_clock_id" value="PIC_001" description="ID for PIC embedded slave clock"/>
+		<setting name="protocol_code" value="ID_23" description="Protocol codes for slave clock communication"/>
+		<setting name="digit_file_img_prefix" value="Nixie tube" description="Image files for displaying the digit 0 - 9. suffix is default as _0 to _9"/>
+		<setting name="event_trigger" value="test.exe" description="Executable file (full path file name) that when event is trigger. "/>
+		<setting name="bool_24h" value="False" description="set the clock displayed as 12 (AM/PM) or 24 hour format"/>
+    </module>
+
+	<module hostname="Another-Computer">
+		<setting name="slave_clock_id" value="PIC_002" description="ID for PIC embedded slave clock"/>
+		<setting name="protocol_code" value="ID_44" description="Protocol codes for slave clock communication"/>
+		<setting name="digit_file_img_prefix" value ="LED" description="Image files for displaying the digit 0 - 9. suffix is default as _0 to _9"/>
+		<setting name="event_trigger" value="test.exe" description="Executable file (full path file name) that when event is trigger. "/>
+		<setting name="bool_24h" value="False" description="set the clock displayed as 12 (AM/PM) or 24 hour format"/>
+    </module>
+
+</config>

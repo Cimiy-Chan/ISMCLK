@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO8859-1" ?>
+<config>
+	<module hostname="CNGUA01NB0737">
+		<!--Tester/system information-->
+		<!--setting name="db_networkpath" value="\\mygsermys1ms034\d\PACAS\PACAS_db\" description="Network drive path that the user registration database files stored"/-->
+		<setting name="db_networkpath" value="Y:\PACAS\PACAS_db\" description="Network drive path that the user registration database files stored"/>
+		<setting name="default_username" value="admin" description="Default username"/>
+		<setting name="default_password" value='gAAAAABlCoQzLX1rbt5W4CEdJPP8iyLAec0DA6Oln2boH3OG0TgxWS2Hc8T3b5iSZwp2kMwyptljSc96ez1qGQt7YWhwobw-fA==' description="Default password (Hashed)"/>
+    </module>
+
+	<module hostname="HKHON01NB0341">
+		<!--Tester/system information-->
+		<setting name="db_networkpath" value="\\mygsermys1ms034\d\PACAS\PACAS_db\" description="Network drive path that the user registration database files stored"/>
+		<setting name="default_username" value="admin" description="Default username"/>
+		<setting name="default_password" value='gAAAAABlCoQzLX1rbt5W4CEdJPP8iyLAec0DA6Oln2boH3OG0TgxWS2Hc8T3b5iSZwp2kMwyptljSc96ez1qGQt7YWhwobw-fA==' description="Default password (Hashed)"/>
+    </module>
+
+</config>

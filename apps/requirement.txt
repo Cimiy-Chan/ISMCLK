@@ -1,0 +1,46 @@
+Python naming convention using PEP8 standard
+PEP = Python Ehancement Proposal
+
+Reference:
+https://www.javatpoint.com/pep-8-in-python (English version)
+https://cflin.com/wordpress/603/pep8-python%E7%B7%A8%E7%A2%BC%E8%A6%8F%E7%AF%84%E6%89%8B%E5%86%8A (Chinese version)
+
+For running "pip" command at cmd, if not successful, please check with following.
+0. Prerequiste: Python is already installed.
+1. Window --> Type: "Environment variable".
+2. Sytem Property panal -> Environment variable panel -> "PATH" -> "Edit". Make sure there are two following path (for Python310 in example )
+    - C:\Users\nx004553\AppData\Local\Programs\Python\Python310
+    - C:\Users\nx004553\AppData\Local\Programs\Python\Python310\Scripts
+
+For running GUI in python, need to install tkinter
+Ready installed
+PS C:\Users\nx004553> pip install tk
+Requirement already satisfied: tk in c:\users\nx004553\appdata\local\programs\python\python310\lib\site-packages (0.1.0)
+PS C:\Users\nx004553>
+
+Note: tkinter only support png icon file
+
+- To disable pylint, select View->Command Palette ->Type 'Python' -> Pylint -> disable,
+then exist VS code and reload the VS code
+
+- Hash method (if need):
+from crytography.fernet import Fernet
+x = Fernet(key)
+y = fernet.decrypt(pw).decode()
+
+For making the distribution executable
+0. Install the PC application NSIS (Nullsoft Scriptable Install System 3.08 or above)
+1. Install pyinstaller by using Powershell C:> pip install pyinstaller
+1a. Change directory to c:\uidmt\apps
+2. C: > pyinstaller -F -w c:\uidmt\apps\uidmt_main.py (Before running it, make sure the older OPTG_main.exe not in the ...\dist)
+3. The OPTG_main.exe is located at C:\user\user_name\dist
+3A. The OPTG_main.exe is located at C:\PACAS\apps\dist
+4. Create a new folder: say: c:\uidmt_dist for making distribtion executable
+5. Move all necessary files and folder to this folders (Note: DO NOT add any source codes to this folder)
+6. Also move the uidmt_main.exe into C:\uidmt_dist\apps
+7. Zip all the files and folders into a zipped file and named it as 'uidmt_setup.zip'
+8. Launch NSIS application, select Compiler - 'Installer based on .ZIP file' (left-top corner)
+9. Open the zip file
+10. Installer Name: UIDMT Installation, Interface=Modern, Default Folder: c:\uidmt
+11: Output EXE file: c:\UIDMT_Dist\uidmt_setup.exe, Compression=LZMA
+12: When finished, the distributed executable will be located at c:\pacas_dist\PACAS_Setup.exe
