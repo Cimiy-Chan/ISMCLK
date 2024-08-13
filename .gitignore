@@ -9,6 +9,14 @@ __pycache__/
 # Image folder
 img/
 
+# Power point files
+*.pptx
+*.ppt
+
+# Files no need to track
+PACAS*.*
+Temp*.*
+
 # Distribution / packaging
 .Python
 build/

@@ -73,9 +73,8 @@ class Ismclk():
                         setting_name = setting.get('name')
                         setting_value = setting.get('value')
                         bool_check = self.set_config(setting_name, setting_value)
-                        print (bool_check)
                         if not bool_check:
-                            self.write_log('ERROR', 'Config setup error. Name/Value pair not found')
+                            self.write_log('ERROR', f'Config setup error. Name="{setting_name}", Value="{setting_value}" not match with system')
                             return False
             if not bool_hostname_found:
                 self.write_log('ERROR', f'No hostname found at XML file. Your computer hostname: {self.hostname}')
@@ -92,21 +91,22 @@ class Ismclk():
         try:
             if name == '': return False
 
-            elif name.lower() == 'slave_clock_id':
-                self.slave_clock_id = value
-                bool_name_valid = True
-            elif name.lower() == 'protocol_code':
-                self.protocol_code = value
-                bool_name_valid = True
-            elif name.lower() == 'digit_file_img_prefix':
-                self.digit_file_img_prefix = value
-                bool_name_valid = True
-            elif name.lower() == 'event_trigger':
-                self.event_trigger = value
-                bool_name_valid = True
-            elif name.lower() == 'bool_24h':
-                self.bool_24h = value
-                bool_name_valid = True
+            match name.lower():
+                case 'slave_clock_id':
+                    self.slave_clock_id = value
+                    bool_name_valid = True
+                case 'protocol_code':
+                    self.protocol_code = value
+                    bool_name_valid = True
+                case 'digit_file_img_prefix':
+                    self.digit_file_img_prefix = value
+                    bool_name_valid = True
+                case 'event_trigger':
+                    self.event_trigger = value
+                    bool_name_valid = True
+                case 'bool_24h':
+                    self.bool_24h = value
+                    bool_name_valid = True
             return bool_name_valid
         except Exception as e:
             self.write_log('ERROR', f'Error in configuration setup with exception {e}')
