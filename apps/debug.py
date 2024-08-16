@@ -1,3 +1,47 @@
+# Serial port demo in console
+
+import serial
+import serial.tools
+import serial.tools.list_ports as port_list
+import time
+
+ports = list(port_list.comports())
+com_list = []
+
+for each_ports in ports:
+    com_list.append(str(each_ports))
+
+print (f'PORT = {com_list[0].split()[0]}')
+
+ser = serial.Serial(port = com_list[0].split()[0], 
+                    baudrate=9600,
+                    parity=serial.PARITY_ODD,
+                    stopbits=serial.STOPBITS_TWO,
+                    bytesize=serial.SEVENBITS)
+xabc = 1
+while True:
+    #Get keyboard input
+    x = input ('Input a string: ')
+    if x == 'exit':
+        ser.close()
+        exit()
+    else:
+        x = x + '\\r\\n'
+        ser.write(x.encode())
+        out = ''
+    time.sleep(1)
+    print ('Test')
+
+    for line in ser.read(100):
+        print ('Test')
+        print (f'Line = {line}')
+
+
+
+
+
+
+'''
 from tkinter import *
 
 root = Tk()
@@ -26,6 +70,7 @@ bluebutton.pack( side = LEFT )
 #blackbutton.pack( side = BOTTOM)
 
 root.mainloop()
+'''
 
 '''
 # importing tkinter

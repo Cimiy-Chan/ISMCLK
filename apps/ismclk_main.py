@@ -8,12 +8,12 @@ Version controlled by GitHub: https://github.com/Cimiy-Chan/ISMCLK.git
 
 '''
 
-from tkinter import Toplevel, StringVar, ttk, messagebox, Button
+from tkinter import *
 import tkinter.font as font, os
 from ismclk_func import *
-from PIL import Image, ImageTk
 import tkinter as tk
 from threading import *
+from datetime import datetime
 import time
 
 
@@ -31,25 +31,31 @@ class TkFunc:
         self.font_size_18 = font.Font(family=self.FONT_STYLE, size=18)
         self.cwd = os.getcwd()
 
-        # Path definition
+        #Path definition
         self.logo_path = os.path.join(self.cwd, 'img', 'black_cat.PNG')
         self.logo = tk.PhotoImage(file=self.logo_path) # Note: Only support PNG file.
-        self.image_path = 'C:\\Cimiy20181027\\HomeProjects\\Python_PC\\ISMCLK\\img'
 
-        self.image_array = ['digit_00.png', 'digit_01.png','digit_02.png','digit_03.png','digit_04.png',
-               'digit_05.png','digit_06.png','digit_07.png','digit_08.png','digit_09.png']
-        
         #Misc self initialization
         self.counter = 0
-        self.image_label = 0
+        self.image_label_h10 = ''
+        self.image_label_h1 = ''
+        self.image_label_m10 = ''
+        self.image_label_m1 = ''
+        self.image_label_s10 = ''
+        self.image_label_s1 = ''                                        
+        self.previous_time = ''
         self.image_h1 = ''
         self.image_h10 = ''
+        self.image_m1 = ''
+        self.image_m10 = ''
+        self.image_s1 = ''
+        self.image_s10 = ''
 
     def ismclk_main_panel (self):
         '''
         - Master clock main panel
         '''
-        main_panel_width = 500
+        main_panel_width = 630
         main_panel_height = 300
         screen_width = self.root.winfo_screenwidth()
         #Put the main panel at top-center
@@ -59,68 +65,85 @@ class TkFunc:
         # Main panel set up
         self.root.iconphoto(False, self.logo)
         self.root.geometry(f'{main_panel_width}x{main_panel_height}+{int(x)}+{int(y)}')  # Width x height
+        self.root.configure(bg='seashell')
         self.root.resizable(False, False)
         self.root.wm_title(50 * ' ' + f'ISMCLK Main Panel Ver:{apps_ismclk.get_main_ver()}')
 
         #Frame setup
-        frame_h = tk.Frame(self.root, width=360, height=240, bg='magenta3')
-        frame_h.pack(side = 'left')
-        frame_h.pack_propagate(0)
+        frame = tk.Frame(self.root, width=630, height=120, bg='magenta3')
 
-        #Dummy setup for positioning the digit location
-        dummy_label_h_a = tk.Label(frame_h, width=1, height=10, bg='magenta3')
-        dummy_label_h_b = tk.Label(frame_h, width=1, height=10, bg='magenta3')
-        dummy_label_h_c = tk.Label(frame_h, width=1, height=10, bg='magenta3')        
+
+        #Dummy setup for positioning the digit location. It is used as partition.
+        top_label = tk.Label(self.root, width=10, height=2, bg='chartreuse')
+        dummy_label_h_a = tk.Label(frame, width=2, height=10, bg='red')
+        dummy_label_h_b = tk.Label(frame, width=1, height=10, bg='red')
+        dummy_label_hm = tk.Label(frame, width=4, height=10, bg='red')
+        dummy_label_m_a = tk.Label(frame, width=1, height=10, bg='red')
+        dummy_label_ms= tk.Label(frame, width=4, height=10, bg='red')
+        dummy_label_s_a = tk.Label(frame, width=1, height=10, bg='red')
+
 
         #Positioning everything
-        #In frame: dummy_label_h_a | image_label_h1 | dummy_label_h_b | image_label_h10 | dummy_label_h_c
+        self.image_h10 = apps_ismclk.load_image(0)        
+        self.image_h1 = apps_ismclk.load_image(0)
+        self.image_m10 = apps_ismclk.load_image(0)       
+        self.image_m1 = apps_ismclk.load_image(0)
+        self.image_s10 = apps_ismclk.load_image(0)        
+        self.image_s1 = apps_ismclk.load_image(0)
+
+        top_label.pack(side = 'top')
+        frame.pack(anchor='nw')
+        frame.pack_propagate(0)
         dummy_label_h_a.pack(side='left')
-        self.image_h1 = self.load_image(0)        
-        self.image_h10 = self.load_image(1)
-        self.image_label_h1 = tk.Label(frame_h, image=self.image_h1)
-
-        self.image_label_h1.pack(side ='left') # Need pack() to form an valid object. If .place is used, no valid obj formed
-        dummy_label_h_b.pack(side='left')
-        self.image_label_h10 = tk.Label(frame_h, image=self.image_h10)
+        self.image_label_h10 = tk.Label(frame, image=self.image_h10)
         self.image_label_h10.pack(side ='left') # Need pack() to form an valid object. If .place is used, no valid obj formed
-        dummy_label_h_c.pack(side='left')
-
-
-
-                           
-
-
-
+        dummy_label_h_b.pack(side='left')
+        self.image_label_h1 = tk.Label(frame, image=self.image_h1)
+        self.image_label_h1.pack(side ='left') 
+        dummy_label_hm.pack(side='left')
+        #
+        self.image_label_m10 = tk.Label(frame, image=self.image_m10)
+        self.image_label_m10.pack(side ='left') 
+        dummy_label_m_a.pack(side='left')
+        self.image_label_m1 = tk.Label(frame, image=self.image_m1)
+        self.image_label_m1.pack(side ='left') 
+        dummy_label_ms.pack(side='left')
+        #
+        self.image_label_s10 = tk.Label(frame, image=self.image_s10)
+        self.image_label_s10.pack(side ='left') 
+        dummy_label_s_a.pack(side='left')
+        self.image_label_s1 = tk.Label(frame, image=self.image_s1)
+        self.image_label_s1.pack(side ='left') 
 
     def trigger_event(self):
         '''
         - Timer trigger to do the event using recursive approach.
         - At the root.after(...), the event name has no '()'.
         '''
+        now = datetime.now()
+        current_time = now.strftime('%H:%M:%S')
+        if current_time != self.previous_time:
 
-        if self.counter == 10:
-            self.counter = 0
-        #print (f'Event triggher: {self.counter}')
-        self.image_h1 = self.load_image(self.counter)
-        self.image_label_h1.config(image=self.image_h1)
-        self.image_label_h10.config(image=self.image_h1)        
-        self.counter = self.counter + 1
+            time_value = apps_ismclk.get_time(current_time)
+            self.image_h10=apps_ismclk.load_image(time_value[0])
+            self.image_h1=apps_ismclk.load_image(time_value[1])
+            self.image_m10=apps_ismclk.load_image(time_value[2])
+            self.image_m1=apps_ismclk.load_image(time_value[3])
+            self.image_s10=apps_ismclk.load_image(time_value[4])
+            self.image_s1=apps_ismclk.load_image(time_value[5])
 
-        self.root.after(1000, self.trigger_event) #Recursive
+            #Update display
+            self.image_label_h10.config(image=self.image_h10)
+            self.image_label_h1.config(image=self.image_h1)
+            self.image_label_m10.config(image=self.image_m10)
+            self.image_label_m1.config(image=self.image_m1)
+            self.image_label_s10.config(image=self.image_s10)
+            self.image_label_s1.config(image=self.image_s1)
+            self.previous_time = current_time
 
 
 
-    def load_image(self, digit_val):
-
-        if digit_val <= 0 or digit_val > 9:
-            digit_val = 0
-
-        image = Image.open(os.path.join(self.image_path, self.image_array[digit_val]))
-        #Image resize
-        image_resize = image.resize((150,200), Image.Resampling.LANCZOS)
-        ret_image = ImageTk.PhotoImage(image_resize)
-        return ret_image
-
+        self.root.after(10, self.trigger_event) #Recursive
 
 # Main program entry
 if __name__=='__main__':
@@ -130,11 +153,11 @@ if __name__=='__main__':
     main_ver = 1
     main_sub_ver = 0
 
+    apps_ismclk = Ismclk (main_ver, main_sub_ver) # This object instantiation should be run first
     tk_func = TkFunc()        
-    apps_ismclk = Ismclk (main_ver, main_sub_ver)
     apps_ismclk.write_log('INFO', f'Loading ISMCLK modules...Ver:{main_ver}.{main_sub_ver}')
     tk_func.ismclk_main_panel()
-    tk_func.root.after(10, tk_func.trigger_event())    
+    tk_func.root.after(10, tk_func.trigger_event())
     tk_func.root.mainloop()    
 
     

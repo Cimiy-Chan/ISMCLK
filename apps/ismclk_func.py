@@ -7,6 +7,7 @@ from pathlib import Path
 import os, socket
 from datetime import datetime
 from time import sleep
+from PIL import Image, ImageTk
 
 class Ismclk():
     '''
@@ -28,6 +29,13 @@ class Ismclk():
         self.digit_file_img_prefix = ''
         self.event_trigger = ''
         self.bool_24h = False
+
+        # Path definition
+        self.image_path = 'C:\\Cimiy20181027\\HomeProjects\\Python_PC\\ISMCLK\\img'
+
+        self.image_array = ['digit_00.png', 'digit_01.png','digit_02.png','digit_03.png','digit_04.png',
+               'digit_05.png','digit_06.png','digit_07.png','digit_08.png','digit_09.png']
+
 
     def get_main_ver(self):
         '''
@@ -111,6 +119,38 @@ class Ismclk():
         except Exception as e:
             self.write_log('ERROR', f'Error in configuration setup with exception {e}')
             return False
-                
             
+    def get_time (self, time_str):
+        '''
+        - Get time string with format: HH:MM:SS
+        - return time arrary with format: [H10, H1, M10, M1, S10, S1]
+        - All values are integer: 0-9. H10=10th digit of hour, H1=1st digit of hour and so on
+        '''
+        split_str = []
+        temp_time_info = [] #Integer, single digit
+        result_time_info = []
 
+        split_str = time_str.split(':')
+        try:
+            for hms in split_str:
+                temp_time_info.append(int(hms)) #Now time_info will be [HH, MM, SS] integer array
+            for each_time_unit in temp_time_info: #In sequence: HH->MM->S
+                unit_10 = int(each_time_unit/10)
+                unit_1 = each_time_unit - int(each_time_unit/10)*10
+                result_time_info.append(unit_10)
+                result_time_info.append(unit_1)
+            return result_time_info
+        except Exception as e:
+            self.write_log('ERROR', e)
+            return [0,0,0,0,0,0]
+
+    def load_image(self, digit_val):
+
+        if digit_val <= 0 or digit_val > 9:
+            digit_val = 0
+
+        image = Image.open(os.path.join(self.image_path, self.image_array[digit_val]))
+        #Image resize
+        image_resize = image.resize((75,100), Image.Resampling.LANCZOS)
+        ret_image = ImageTk.PhotoImage(image_resize)
+        return ret_image
